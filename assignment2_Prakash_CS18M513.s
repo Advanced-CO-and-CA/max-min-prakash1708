@@ -14,7 +14,10 @@
   @ DATA SECTION
       .data
       data_items: .word 10, 4, 28, 100, 8, 0
-
+      max_ : .word 0
+      min_ : .word 0
+      no_of_elements : .word 0
+	  
   @ TEXT section
       .text
 
@@ -34,6 +37,10 @@ _main:
          * if fetched_number == 0 then exit loop
          * load count of numbers, minimum and maximum number to r3, r2 and r1 respectively : program result.
          */
+		
+        /*Note : program was crashing in begining on instructions using sp, so had to check the stack 
+		 *       in simulator to fix
+		 */
 		
         @ save data_items[0] to stack 
         ldr         r3,=data_items
@@ -119,5 +126,11 @@ _get_max_min:
 
 _end_loop_max_min:
         ldr         r3,[sp]    @ r3 will have the number of elements
+        ldr         r0,=no_of_elements
+        str         r3,[r0]
         ldr         r2,[sp,#4] @ r2 will have minimum value
+        ldr         r0,=min_
+        str         r2,[r0]
         ldr         r1,[sp,#8] @ r1 will have maximum value
+        ldr         r0,=max_
+        str         r1,[r0]
